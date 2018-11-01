@@ -17,8 +17,8 @@ fi
 # Editors
 #
 
-export EDITOR='nano'
-export VISUAL='nano'
+export EDITOR='vim'
+export VISUAL='vim'
 export PAGER='less'
 
 #
@@ -43,6 +43,7 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  $HOME/.local/bin
   /usr/local/{bin,sbin}
   $path
 )
@@ -60,4 +61,18 @@ export LESS='-F -g -i -M -R -S -w -X -z-4'
 # Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
 if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+fi
+
+###
+# Modifications by Tynan
+###
+
+# Set up modifications for Python interactive shell.
+if [[ -e "$HOME/.pystartup" ]]; then
+  export PYTHONSTARTUP="$HOME/.pystartup"
+fi
+
+# Load any other potential modifications to the shell.
+if [[ -e "$HOME/.zshext" ]]; then
+  source "$HOME/.zshext"
 fi

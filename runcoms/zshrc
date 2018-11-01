@@ -10,4 +10,77 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+###
+# Modifications by Tynan
+###
+
+#
+# Shell Behavior
+#
+
+# Turns out I like using '^' and '#' in normal shell use.
+unsetopt EXTENDED_GLOB
+
+# Send the HUP signal to jobs when the shell exits.
+setopt HUP
+
+# Report the status of background and suspended jobs before exiting.
+setopt CHECK_JOBS
+
+# Don't share history between all sessions.
+unsetopt SHARE_HISTORY
+
+# Short normal/insert mode switching
+export KEYTIMEOUT=1
+
+# Search history with fzf.
+bindkey -M vicmd "/" fzf-history-widget
+
+#
+# COLORS
+#
+
+# Enable colors in the shell
+autoload -U colors
+colors
+
+# Base16 Shell
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+#
+# Custom Aliases
+#
+
+# Add symbols after pathnames that are directories, executables, links, etc.
+alias ls="${aliases[ls]:-ls} -F"
+
+# Suggested edits from homebrew since ZSH is installed in a non-standard
+# location.
+if [[ "$OSTYPE" == darwin* ]]; then
+  unalias run-help
+  autoload run-help
+  HELPDIR=/usr/local/share/zsh/help
+fi
+
+#
+# fzf and ripgrep setup.
+#
+
+# Load fzf features for ZSH.
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Set default fzf search command.
+export FZF_DEFAULT_COMMAND='fd --type f --no-ignore --hidden --follow --exclude=.git/*'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Search for a pattern in a file, and open your editor to that file's location.
+# For vim, requires the vim-fetch plugin.
+sf() {
+  printf -v search "%q" "$*"
+  include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,sv,svh,v,h"
+  exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist"
+  rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
+  files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
+  [[ -n "$files" ]] && ${EDITOR:-vim} $files
+}
