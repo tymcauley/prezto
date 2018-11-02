@@ -64,15 +64,41 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 #
-# fzf and ripgrep setup.
+# fzf setup.
 #
 
-# Load fzf features for ZSH.
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Load fzf features for ZSH. This should be a more cross-platform-friendly version of the ~/.fzf.zsh file.
+if [[ "$OSTYPE" == darwin* ]]; then
+  FZF_ZSH_COMPLETIONS="/usr/local/opt/fzf/shell/completion.zsh"
+  FZF_ZSH_BINDINGS="/usr/local/opt/fzf/shell/key-bindings.zsh"
+else
+  # These are the file locations in Debian. Haven't tested any other distros.
+  FZF_ZSH_COMPLETIONS="/usr/share/zsh/vendor-completions/_fzf"
+  FZF_ZSH_BINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
+fi
+
+if [[ -f "$FZF_ZSH_COMPLETIONS" ]] ; then
+  source "$FZF_ZSH_COMPLETIONS"
+else
+  echo "ERROR: Couldn't find fzf completions for zsh. Expected them at '$FZF_ZSH_COMPLETIONS'"
+fi
+
+if [[ -f "$FZF_ZSH_BINDINGS" ]] ; then
+  source "$FZF_ZSH_BINDINGS"
+else
+  echo "ERROR: Couldn't find fzf bindings for zsh. Expected them at '$FZF_ZSH_BINDINGS'"
+fi
+
+unset FZF_ZSH_COMPLETIONS
+unset FZF_ZSH_BINDINGS
 
 # Set default fzf search command.
 export FZF_DEFAULT_COMMAND='fd --type f --no-ignore --hidden --follow --exclude=.git/*'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+#
+# ripgrep setup.
+#
 
 # Search for a pattern in a file, and open your editor to that file's location.
 # For vim, requires the vim-fetch plugin.
