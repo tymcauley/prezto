@@ -67,46 +67,52 @@ fi
 # fzf setup.
 #
 
-# Load fzf features for ZSH. This should be a more cross-platform-friendly version of the ~/.fzf.zsh file.
-if [[ "$OSTYPE" == darwin* ]]; then
-  FZF_ZSH_COMPLETIONS="/usr/local/opt/fzf/shell/completion.zsh"
-  FZF_ZSH_BINDINGS="/usr/local/opt/fzf/shell/key-bindings.zsh"
-else
-  # These are the file locations in Debian. Haven't tested any other distros.
-  FZF_ZSH_COMPLETIONS="/usr/share/zsh/vendor-completions/_fzf"
-  FZF_ZSH_BINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
+if command -v fzf > /dev/null 2>&1 ; then
+  # Load fzf features for ZSH. This should be a more cross-platform-friendly version of the ~/.fzf.zsh file.
+  if [[ "$OSTYPE" == darwin* ]] ; then
+    FZF_ZSH_COMPLETIONS="/usr/local/opt/fzf/shell/completion.zsh"
+    FZF_ZSH_BINDINGS="/usr/local/opt/fzf/shell/key-bindings.zsh"
+  else
+    # These are the file locations in Debian. Haven't tested any other distros.
+    FZF_ZSH_COMPLETIONS="/usr/share/zsh/vendor-completions/_fzf"
+    FZF_ZSH_BINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
+  fi
+
+  if [[ -f "$FZF_ZSH_COMPLETIONS" ]] ; then
+    source "$FZF_ZSH_COMPLETIONS"
+  else
+    echo "ERROR: Couldn't find fzf completions for zsh. Expected them at '$FZF_ZSH_COMPLETIONS'"
+  fi
+
+  if [[ -f "$FZF_ZSH_BINDINGS" ]] ; then
+    source "$FZF_ZSH_BINDINGS"
+  else
+    echo "ERROR: Couldn't find fzf bindings for zsh. Expected them at '$FZF_ZSH_BINDINGS'"
+  fi
+
+  unset FZF_ZSH_COMPLETIONS
+  unset FZF_ZSH_BINDINGS
+
+  # Set default fzf search command.
+  if command -v fd > /dev/null 2>&1 ; then
+    export FZF_DEFAULT_COMMAND="fd --type f --no-ignore --hidden --follow --exclude '.git/*'"
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  fi
 fi
-
-if [[ -f "$FZF_ZSH_COMPLETIONS" ]] ; then
-  source "$FZF_ZSH_COMPLETIONS"
-else
-  echo "ERROR: Couldn't find fzf completions for zsh. Expected them at '$FZF_ZSH_COMPLETIONS'"
-fi
-
-if [[ -f "$FZF_ZSH_BINDINGS" ]] ; then
-  source "$FZF_ZSH_BINDINGS"
-else
-  echo "ERROR: Couldn't find fzf bindings for zsh. Expected them at '$FZF_ZSH_BINDINGS'"
-fi
-
-unset FZF_ZSH_COMPLETIONS
-unset FZF_ZSH_BINDINGS
-
-# Set default fzf search command.
-export FZF_DEFAULT_COMMAND='fd --type f --no-ignore --hidden --follow --exclude=.git/*'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 #
 # ripgrep setup.
 #
 
-# Search for a pattern in a file, and open your editor to that file's location.
-# For vim, requires the vim-fetch plugin.
-sf() {
-  printf -v search "%q" "$*"
-  include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,sv,svh,v,h"
-  exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist"
-  rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
-  files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
-  [[ -n "$files" ]] && ${EDITOR:-vim} $files
-}
+if command -v rg > /dev/null 2>&1 ; then
+  # Search for a pattern in a file, and open your editor to that file's location.
+  # For vim, requires the vim-fetch plugin.
+  sf () {
+    printf -v search "%q" "$*"
+    include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,sv,svh,v,h"
+    exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist"
+    rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
+    files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
+    [[ -n "$files" ]] && ${EDITOR:-vim} $files
+  }
+fi
