@@ -33,11 +33,27 @@ unsetopt SHARE_HISTORY
 # Short normal/insert mode switching
 export KEYTIMEOUT=1
 
-# Search history with fzf.
-bindkey -M vicmd "/" fzf-history-widget
+#
+# Key Bindings
+#
+
+if command -v fzf > /dev/null 2>&1 ; then
+  # Search history with fzf if it is present.
+  bindkey -M vicmd "/" fzf-history-widget
+
+  # Use fzf to find files/directories.
+  bindkey -M vicmd "gf" fzf-file-widget
+  bindkey -M vicmd "gd" fzf-cd-widget
+else
+  # If fzf isn't installed, then just reverse the default search direction (use '/' to search backward in command
+  # history, use '?' to search forward).
+  bindkey -M vicmd "/" history-incremental-pattern-search-backward
+fi
+
+bindkey -M vicmd "?" history-incremental-pattern-search-forward
 
 #
-# COLORS
+# Colors
 #
 
 # Enable colors in the shell
@@ -55,8 +71,7 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # Add symbols after pathnames that are directories, executables, links, etc.
 alias ls="${aliases[ls]:-ls} -F"
 
-# Suggested edits from homebrew since ZSH is installed in a non-standard
-# location.
+# Suggested edits from homebrew since ZSH is installed in a non-standard location.
 if [[ "$OSTYPE" == darwin* ]]; then
   unalias run-help
   autoload run-help
