@@ -77,3 +77,9 @@ fi
 if [[ -e "$HOME/.zshext" ]]; then
   source "$HOME/.zshext"
 fi
+
+# Add local directory for zsh completion files.
+fpath=(
+  $fpath
+  $HOME/.zfunc
+)
