@@ -83,3 +83,6 @@ fpath=(
   $fpath
   $HOME/.zfunc
 )
+
+# If fzf is installed by git, load it.
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
