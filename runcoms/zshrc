@@ -33,6 +33,11 @@ unsetopt SHARE_HISTORY
 # Short normal/insert mode switching
 export KEYTIMEOUT=1
 
+# Specify the ZSH command history file and size.
+export HISTFILE="$HOME/.zhistory"
+export HISTSIZE=20000
+export SAVEHIST=20000
+
 #
 # Key Bindings
 #
