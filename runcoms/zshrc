@@ -68,8 +68,18 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # Custom Aliases
 #
 
-# Add symbols after pathnames that are directories, executables, links, etc.
-alias ls="${aliases[ls]:-ls} -F"
+# Replace ls with exa: https://the.exa.website/
+alias exa='exa --classify'
+alias ls='exa'
+alias ll='ls --long --binary --group --git'
+alias la='ll --all'
+alias l='ls --oneline --all'
+alias lr='ls --recurse'
+alias llr='ll --recurse'
+alias lt='ls --tree'
+alias llt='ll --tree'
+alias llst='ll --sort=newest' # Sort by modified time, most recent at the bottom
+alias llss='ll --sort=size'   # Sort by size, largest at the bottom
 
 # Suggested edits from homebrew since ZSH is installed in a non-standard location.
 if [[ "$OSTYPE" == darwin* ]]; then
