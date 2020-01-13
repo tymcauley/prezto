@@ -74,8 +74,8 @@ if [[ -e "$HOME/.pystartup" ]]; then
 fi
 
 # Load any other potential modifications to the shell.
-if [[ -e "$HOME/.zshext" ]]; then
-  source "$HOME/.zshext"
+if [[ -e "$HOME/.zprofile.local" ]]; then
+  source "$HOME/.zprofile.local"
 fi
 
 # Add local directory for zsh completion files.

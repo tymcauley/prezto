@@ -152,3 +152,8 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# Load any other potential modifications to the shell.
+if [[ -e "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi
