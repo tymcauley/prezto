@@ -69,14 +69,10 @@ fi
 ###
 
 # Set up modifications for Python interactive shell.
-if [[ -e "$HOME/.pystartup" ]]; then
-  export PYTHONSTARTUP="$HOME/.pystartup"
-fi
+[[ -f "$HOME/.pystartup" ]] && export PYTHONSTARTUP="$HOME/.pystartup"
 
 # Load any other potential modifications to the shell.
-if [[ -e "$HOME/.zprofile.local" ]]; then
-  source "$HOME/.zprofile.local"
-fi
+[[ -f "$HOME/.zprofile.local" ]] && source "$HOME/.zprofile.local"
 
 # Add local directory for zsh completion files.
 fpath=(
@@ -85,9 +81,7 @@ fpath=(
 )
 
 # If fzf is installed by git, load it.
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # On some systems (mostly Linux, where fd already exists), fd is installed as fdfind. Create an alias for that.
-if command -v fdfind > /dev/null 2>&1 ; then
-  alias fd=fdfind
-fi
+command -v fdfind > /dev/null 2>&1 && alias fd=fdfind

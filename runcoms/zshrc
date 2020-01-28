@@ -154,6 +154,4 @@ fi
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # Load any other potential modifications to the shell.
-if [[ -e "$HOME/.zshrc.local" ]]; then
-  source "$HOME/.zshrc.local"
-fi
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
