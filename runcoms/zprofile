@@ -74,6 +74,11 @@ fi
 # Load any other potential modifications to the shell.
 [[ -f "$HOME/.zprofile.local" ]] && source "$HOME/.zprofile.local"
 
+# Load Homebrew path/environment modifications. Use the `BREW_BIN_PREFIX` prefix to the `brew`
+# command if Homebrew is installed in a non-default location (you should set that inside of
+# `$HOME/.zprofile.local`, and ensure it has a trailing slash).
+command -v ${BREW_BIN_PREFIX:-}brew > /dev/null 2>&1 && eval $(${BREW_BIN_PREFIX:-}brew shellenv)
+
 # Add local directory for zsh completion files.
 fpath=(
   $fpath
