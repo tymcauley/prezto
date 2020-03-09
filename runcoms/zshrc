@@ -76,7 +76,8 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # Replace ls with exa: https://the.exa.website/
 alias exa='exa --classify'
 alias ls='exa'
-alias ll='ls --long --binary --group --git'
+alias ll='ls --long --binary --group'
+alias llg='ll --git'
 alias la='ll --all'
 alias l='ls --oneline --all'
 alias lr='ls --recurse'
