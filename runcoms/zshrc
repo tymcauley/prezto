@@ -98,34 +98,12 @@ fi
 # fzf setup.
 #
 
+# If the fzf setup file exists, load it.
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+
 if command -v fzf > /dev/null 2>&1 ; then
-  # If fzf is installed by git, then auto-completion and key bindings have already been loaded.
-  if [[ ! -f ~/.fzf.zsh ]] ; then
-    # Load fzf features for ZSH. This should be a more cross-platform-friendly version of the ~/.fzf.zsh file.
-    if [[ "$OSTYPE" == darwin* ]] ; then
-      FZF_ZSH_COMPLETIONS="/usr/local/opt/fzf/shell/completion.zsh"
-      FZF_ZSH_BINDINGS="/usr/local/opt/fzf/shell/key-bindings.zsh"
-    else
-      # These are the file locations in Debian. Haven't tested any other distros.
-      FZF_ZSH_COMPLETIONS="/usr/share/zsh/vendor-completions/_fzf"
-      FZF_ZSH_BINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
-    fi
-
-    if [[ -f "$FZF_ZSH_COMPLETIONS" ]] ; then
-      source "$FZF_ZSH_COMPLETIONS"
-    else
-      echo "ERROR: Couldn't find fzf completions for zsh. Expected them at '$FZF_ZSH_COMPLETIONS'"
-    fi
-
-    if [[ -f "$FZF_ZSH_BINDINGS" ]] ; then
-      source "$FZF_ZSH_BINDINGS"
-    else
-      echo "ERROR: Couldn't find fzf bindings for zsh. Expected them at '$FZF_ZSH_BINDINGS'"
-    fi
-
-    unset FZF_ZSH_COMPLETIONS
-    unset FZF_ZSH_BINDINGS
-  fi
+  # If the fzf setup file doesn't exist, then prompt the user to create it.
+  [[ ! -f ~/.fzf.zsh ]] && echo "WARNING: Please generate the FZF setup file (use 'brew info fzf' for more information)"
 
   # Set default fzf search command.
   if command -v fd > /dev/null 2>&1 ; then

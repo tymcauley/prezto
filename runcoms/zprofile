@@ -88,8 +88,5 @@ fpath=(
   $HOME/.zfunc
 )
 
-# If fzf is installed by git, load it.
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-
 # On some systems (mostly Linux, where fd already exists), fd is installed as fdfind. Create an alias for that.
 command -v fdfind > /dev/null 2>&1 && alias fd=fdfind
