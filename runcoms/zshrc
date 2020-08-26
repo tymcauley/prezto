@@ -46,25 +46,6 @@ export HISTSIZE=20000
 export SAVEHIST=20000
 
 #
-# Key Bindings
-#
-
-if command -v fzf > /dev/null 2>&1 ; then
-  # Search history with fzf if it is present.
-  bindkey -M vicmd "/" fzf-history-widget
-
-  # Use fzf to find files/directories.
-  bindkey -M vicmd "gf" fzf-file-widget
-  bindkey -M vicmd "gd" fzf-cd-widget
-else
-  # If fzf isn't installed, then just reverse the default search direction (use '/' to search backward in command
-  # history, use '?' to search forward).
-  bindkey -M vicmd "/" history-incremental-pattern-search-backward
-fi
-
-bindkey -M vicmd "?" history-incremental-pattern-search-forward
-
-#
 # Colors
 #
 
@@ -120,6 +101,25 @@ if command -v fzf > /dev/null 2>&1 ; then
     export FZF_CTRL_T_COMMAND="fd --type f --follow"
   fi
 fi
+
+#
+# Key Bindings
+#
+
+if command -v fzf > /dev/null 2>&1 ; then
+  # Search history with fzf if it is present.
+  bindkey -M vicmd "/" fzf-history-widget
+
+  # Use fzf to find files/directories.
+  bindkey -M vicmd "gf" fzf-file-widget
+  bindkey -M vicmd "gd" fzf-cd-widget
+else
+  # If fzf isn't installed, then just reverse the default search direction (use '/' to search backward in command
+  # history, use '?' to search forward).
+  bindkey -M vicmd "/" history-incremental-pattern-search-backward
+fi
+
+bindkey -M vicmd "?" history-incremental-pattern-search-forward
 
 #
 # ripgrep setup.
