@@ -77,6 +77,10 @@ if command -v exa > /dev/null 2>&1 ; then
   alias llss='ll --sort=size'   # Sort by size, largest at the bottom
 fi
 
+if command -v nvim > /dev/null 2>&1 ; then
+  alias vim='nvim'
+fi
+
 # Suggested edits from homebrew since ZSH is installed in a non-standard location.
 if [[ "$OSTYPE" == darwin* ]]; then
   unalias run-help
