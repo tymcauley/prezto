@@ -84,8 +84,13 @@ fi
 # `$HOME/.zprofile.local`, and ensure it has a trailing slash).
 command -v ${BREW_BIN_PREFIX:-}brew > /dev/null 2>&1 && eval $(${BREW_BIN_PREFIX:-}brew shellenv)
 
-# If LLVM is installed, add all of the LLVM utilities to the end of the path.
-[[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/llvm/bin" ]] && path=($path $HOMEBREW_PREFIX/opt/llvm/bin)
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+    # If LLVM is installed, add all of the LLVM utilities to the end of the path.
+    [[ -d "$HOMEBREW_PREFIX/opt/llvm/bin" ]] && path=($path $HOMEBREW_PREFIX/opt/llvm/bin)
+
+    # Add homebrew zsh completion files to fpath.
+    fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
+fi
 
 # Add local directory for zsh completion files.
 fpath=(
