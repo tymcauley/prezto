@@ -122,23 +122,6 @@ fi
 
 bindkey -M vicmd "?" history-incremental-pattern-search-forward
 
-#
-# ripgrep setup.
-#
-
-if command -v rg > /dev/null 2>&1 ; then
-  # Search for a pattern in a file, and open your editor to that file's location.
-  # For vim, requires the vim-fetch plugin.
-  sf () {
-    printf -v search "%q" "$*"
-    include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,sv,svh,v,h"
-    exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist"
-    rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
-    files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
-    [[ -n "$files" ]] && ${EDITOR:-vim} $files
-  }
-fi
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
