@@ -135,5 +135,8 @@ export COURSIER_BIN_DIR="$HOME/.local/share/coursier/bin"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Setup ghcup.
+[[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
+
 # Load any other potential modifications to the shell.
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
