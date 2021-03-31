@@ -140,3 +140,8 @@ export COURSIER_BIN_DIR="$HOME/.local/share/coursier/bin"
 
 # Load any other potential modifications to the shell.
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# Setup direnv
+if command -v direnv > /dev/null 2>&1 ; then
+  eval "$(direnv hook zsh)"
+fi
