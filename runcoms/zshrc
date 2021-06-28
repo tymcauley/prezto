@@ -41,7 +41,7 @@ unsetopt SHARE_HISTORY
 export KEYTIMEOUT=1
 
 # Specify the ZSH command history file and size.
-export HISTFILE="$HOME/.zhistory"
+export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=20000
 export SAVEHIST=20000
 
@@ -76,13 +76,6 @@ fi
 if command -v nvim > /dev/null 2>&1 ; then
   alias vim='nvim'
   alias vimdiff='nvim -d'
-fi
-
-# Suggested edits from homebrew since ZSH is installed in a non-standard location.
-if [[ "$OSTYPE" == darwin* ]]; then
-  unalias run-help
-  autoload run-help
-  HELPDIR=/usr/local/share/zsh/help
 fi
 
 #
